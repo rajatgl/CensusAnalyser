@@ -2,15 +2,15 @@ package com.bridgelabz.censusanalyser;
 
 public class CensusValidationException extends Exception{
 
-	private int stateCodeCount, stateCensusCount;
+	private int count, expectedCount;
 	private String errorString;
 	private errorType type;
 	
 	public enum errorType{COUNT_ERROR, FILE_ERROR};
 	
-	public CensusValidationException(int stateCodeCount, int stateCensusCount){
-		this.stateCensusCount = stateCensusCount;
-		this.stateCodeCount = stateCodeCount;
+	public CensusValidationException(int count, int expectedCount){
+		this.count = count;
+		this.expectedCount = expectedCount;
 		this.type = errorType.COUNT_ERROR;
 	}
 	
@@ -22,7 +22,7 @@ public class CensusValidationException extends Exception{
 	@Override
 	public String toString() {
 		if(type == errorType.COUNT_ERROR)
-			return ("CensusValidationException: Records Lengths DO NOT MATCH. State Codes Length: " + this.stateCodeCount + ". State Census Data: " + this.stateCensusCount);
+			return ("CensusValidationException: Records Lengths DO NOT MATCH. Records Length: " + this.count + ". Expected Length: " + this.expectedCount);
 		else
 			return "CensusValidationException: " + this.errorString;
 	}

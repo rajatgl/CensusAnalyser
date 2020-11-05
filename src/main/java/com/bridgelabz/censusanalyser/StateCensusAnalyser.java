@@ -26,18 +26,18 @@ public class StateCensusAnalyser
 	
 	public void validateCensusRecords() throws CensusValidationException{
 		
-		int countStateCensus = 0, countStateCodes = 0;
+		int countStateCensus = 0;
+		int expectedLength = 29;
 		
 		try {
 			countStateCensus = openFile("./asset/IndiaStateCensusData.csv", false);
-			countStateCodes = openFile("./asset/IndiaStateCode.csv", false);
 		}
 		catch(Exception e) {
 			throw new CensusValidationException("Could not open file. Check file address or type (should be CSV).");
 		}
 		
-		if(countStateCensus != countStateCodes) {
-			throw new CensusValidationException(countStateCodes, countStateCensus);
+		if(countStateCensus != expectedLength) {
+			throw new CensusValidationException(countStateCensus, expectedLength);
 		}
 	}
 }

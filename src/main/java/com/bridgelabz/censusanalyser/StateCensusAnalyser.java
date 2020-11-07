@@ -65,4 +65,47 @@ public class StateCensusAnalyser
 	    else
 	    	return false;
 	}
+	
+	public void validateStateCodeRecords(String filePath) throws CensusValidationException{
+		
+		int countStateCensus = 0;
+		int expectedLength = 38;
+		
+		if(!isCSV(filePath)) {
+			throw new CensusValidationException("File is not a CSV type.");
+		}
+		try {
+			countStateCensus = readFile(filePath);
+		}
+		catch(Exception e) {
+			throw new CensusValidationException("Could not open file. Check file address or type (should be CSV).");
+		}
+		
+		if(countStateCensus != expectedLength) {
+			throw new CensusValidationException(countStateCensus, expectedLength);
+		}
+		
+		try {
+			if(!matchHeaderStateCodes(filePath)) {
+				throw new CensusValidationException("Header did not match. Did you add the Census File itself?", 2);
+			}
+		}
+		catch(Exception e) {
+			throw new CensusValidationException("Header did not match. Did you add the Census File itself?", 2);
+		}
+	}
+	
+	public boolean matchHeaderStateCodes(String filePath) throws Exception{
+		CSVReader reader = new CSVReader(new FileReader(filePath));
+	    Iterator<String[]> it = reader.iterator();
+	    String[] header = (String[])it.next();
+	    
+	    if(header[0].equals("SrNo")
+	    		&& header[1].equals("State Name")
+	    		&& header[2].equals("TIN")
+	    		&& header[3].equals("StateCode"))
+	    	return true;
+	    else
+	    	return false;
+	}
 }

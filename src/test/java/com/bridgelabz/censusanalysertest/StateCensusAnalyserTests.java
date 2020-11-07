@@ -48,4 +48,46 @@ public class StateCensusAnalyserTests {
 		}
 		catch(CensusValidationException e) {}
 	}
+	
+	//UC2: State Codes Data
+	@Test
+	public void givenStateCodesCSV_IfRecordsMatch_ThrowNoException() {
+		StateCensusAnalyser analyzer = new StateCensusAnalyser();
+		try {
+			analyzer.validateCensusRecords("./asset/IndiaStateCode.csv");
+		}
+		catch(CensusValidationException e) {
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void givenStateCodesCSV_IfRecordsMismatch_ThrowsException() {
+		StateCensusAnalyser analyzer = new StateCensusAnalyser();
+		try {
+			analyzer.validateCensusRecords("./asset/IndiaStateCensusData.csv");
+			Assert.fail();
+		}
+		catch(CensusValidationException e) {}
+	}
+	
+	@Test
+	public void givenStateCodesCSV_IfIncorrectType_ThrowsException() {
+		StateCensusAnalyser analyzer = new StateCensusAnalyser();
+		try {
+			analyzer.validateCensusRecords("./asset/IndiaStateCode");
+			Assert.fail();
+		}
+		catch(CensusValidationException e) {}
+	}
+	
+	@Test
+	public void givenStateCodesCSV_IfIncorrectHeader_ThrowsException() {
+		StateCensusAnalyser analyzer = new StateCensusAnalyser();
+		try {
+			analyzer.validateCensusRecords("./asset/IndiaStateCodeWrongHeader.csv");
+			Assert.fail();
+		}
+		catch(CensusValidationException e) {}
+	}
 }

@@ -4,26 +4,31 @@ public class CensusValidationException extends Exception{
 
 	private int count, expectedCount;
 	private String errorString;
-	private errorType type;
+	private ErrorType type;
 	
-	public enum errorType{COUNT_ERROR, FILE_ERROR};
+	public enum ErrorType{COUNT_ERROR, FILE_ERROR, HEADER_ERROR};
 	
 	public CensusValidationException(int count, int expectedCount){
 		this.count = count;
 		this.expectedCount = expectedCount;
-		this.type = errorType.COUNT_ERROR;
+		this.type = ErrorType.COUNT_ERROR;
 	}
 	
 	public CensusValidationException(String errorString) {
 		this.errorString = errorString;
-		this.type = errorType.FILE_ERROR;
+		this.type = ErrorType.FILE_ERROR;
+	}
+	
+	public CensusValidationException(String errorString, int type) {
+		this.type = ErrorType.values()[type];
+		this.errorString = errorString;
 	}
 	
 	@Override
 	public String toString() {
-		if(type == errorType.COUNT_ERROR)
-			return ("CensusValidationException: Records Lengths DO NOT MATCH. Records Length: " + this.count + ". Expected Length: " + this.expectedCount);
+		if(type == ErrorType.COUNT_ERROR)
+			return ("CensusValidationException COUNT_ERROR: Records Lengths DO NOT MATCH. Records Length: " + this.count + ". Expected Length: " + this.expectedCount);
 		else
-			return "CensusValidationException: " + this.errorString;
+			return "CensusValidationException " + type.name() + ": " + this.errorString;
 	}
 }
